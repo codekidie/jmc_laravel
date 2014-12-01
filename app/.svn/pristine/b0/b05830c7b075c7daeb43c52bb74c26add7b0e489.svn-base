@@ -1,0 +1,76 @@
+<?php echo $__env->make('administrator.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->startSection('page-content'); ?>
+	<div class="row">
+		<!-- START BREADCRUMB -->
+		<div class="col-lg-12">
+
+            <h1><?php echo ucwords($hotel->hotel_name); ?></h1>
+            <ol class="breadcrumb">
+              <li><a href="<?php echo url('administrator'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+              <li><a href="<?php echo url('administrator/import'); ?>"><i class="fa fa-building-o"></i> Agoda Hotels</a></li>
+              <li class="active"><i class="fa fa-bookmark"></i> <?php echo ucwords($hotel->hotel_name); ?></li>
+            </ol>
+            
+          </div>
+		<!-- END BREADCRUMB -->
+		<!-- START HOTEL IMAGES -->
+		<div class="col-lg-4">
+			<h3>Hotel Photos</h3>
+			<div class="col-lg-6">
+			    <a href="<?php echo $hotel->photo1; ?>" data-lightbox="image-1" data-title="<?php echo ucwords($hotel->hotel_name); ?>" class="thumbnail">
+			      <img src="<?php echo $hotel->photo1; ?>" alt="...">
+			    </a>
+			  </div>
+			  <div class="col-lg-6">
+			    <a href="<?php echo $hotel->photo2; ?>" data-lightbox="image-1" data-title="<?php echo ucwords($hotel->hotel_name); ?>" class="thumbnail">
+			  
+			      <img src="<?php echo $hotel->photo2; ?>" alt="...">
+			
+			    </a>
+			  </div>
+			  <div class="clearfix"></div>
+			  <div class="col-lg-6">
+			    <a href="<?php echo $hotel->photo3; ?>" data-lightbox="image-1" data-title="<?php echo ucwords($hotel->hotel_name); ?>" class="thumbnail">
+			      <img src="<?php echo $hotel->photo3; ?>" alt="...">
+			    </a>
+			  </div>
+			  <div class="col-lg-6">
+			    <a href="<?php echo $hotel->photo4; ?>" data-lightbox="image-1" data-title="<?php echo ucwords($hotel->hotel_name); ?>" class="thumbnail">
+			      <img src="<?php echo $hotel->photo4; ?>" alt="...">
+			    </a>
+			  </div>
+			  <div class="col-lg-6">
+			    <a href="<?php echo $hotel->photo5; ?>" data-lightbox="image-1" data-title="<?php echo ucwords($hotel->hotel_name); ?>" class="thumbnail">
+			      <img src="<?php echo $hotel->photo5; ?>" alt="...">
+			    </a>
+			  </div>
+		</div>
+		<!-- START HOTEL IMAGES -->
+
+		<!-- START HOTEL DETAILS -->
+		<div class="col-lg-8">
+			<h3>More Details about <a href="http://agoda.com<?php echo $hotel->url; ?>" target="_blank"><?php echo ucwords($hotel->hotel_name); ?></a></h3>
+			<br>
+			<?php if($hotel->continent != ""): ?>
+				<h4>Continent</h4>
+				<?php echo $hotel->continent; ?>
+			<?php endif; ?>
+			<h4>Address</h4>
+			<address><?php echo $hotel->addressline1; ?> <?php echo $hotel->zipcode; ?>, <?php echo $hotel->country; ?></address>
+			<h4>Number of Rooms</h4>
+			<?php echo $hotel->numberrooms; ?>
+			<h4>Hotel Overview</h4>
+			<p class=""><?php echo ucfirst($hotel->overview); ?></p>
+			<h4>Longitude</h4>
+			<?php echo $hotel->longitude; ?>
+			<h4>Latitude</h4>
+			<?php echo $hotel->latitude; ?>
+			<h4>Map Location</h4>
+			<div id="map-canvas"></div>
+		</div>
+		<!-- END HOTEL DETAILS -->
+	</div>
+	<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

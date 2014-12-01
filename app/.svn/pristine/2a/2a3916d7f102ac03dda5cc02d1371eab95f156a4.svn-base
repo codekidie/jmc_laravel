@@ -1,0 +1,1 @@
+<img src="<?php echo asset('_uploads/'.$image->filename); ?>" alt="">

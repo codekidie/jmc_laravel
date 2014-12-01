@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="<?php echo asset('backend/css/bootstrap.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo asset('backend/css/sb-admin.css'); ?>">
+	<link rel="stylesheet" href="<?php echo asset('backend/css/login.css'); ?>">
+	<script src="<?php echo asset('backend/js/jquery.js'); ?>"></script>
+	<script>
+		$("document").ready(function(){
+			$("#frm").submit(function(e){
+				e.preventDefault();
+				var username = $("input#username").val();
+				var password = $("input#password").val();
+				var token =  $("input[name=_token]").val();
+				var dataString = 'username='+username+'&token='+token; 
+				$.ajax({
+					type: "POST",
+					url : "admin/login",
+					data : {"username":username,"password":password},
+					success : function(data){
+						console.log();
+						if(data == false){
+							$("#content").text("Some error happened");
+						}else{
+							$("#content").fadeOut(0);
+							$("#content").html(errorTemplate(data));
+							$("#content").fadeIn();
+
+						}
+					}
+				},"json");
+
+		});
+			function errorTemplate(data){
+				var v = "<div>"
+					+ "<p><strong>"+data.username+"</strong></p>"
+				    if(data.password != undefined){
+					 v+ "<p><strong>"+data.username+"</strong></p>";
+					}
+					 if(data.password != undefined){
+					 	v += "<p><strong>"+data.password+"</strong></p>";
+					 }
+					v+="</div>";
+				return v;
+			}
+		});//end of document ready function
+	</script>
+</head>
+<body>
+	<div id="loginfrm">
+		<div id="content"></div>
+		<?php echo Form::open(array("","id"=>"frm")); ?>
+		<!-- <form id="frm"></form> -->
+		<label id="username-label">Username</label>		
+		<input type="text" name="username" id="username">
+		<label id="password-label">Password</label>
+		<?php echo Form::password('password',array("class"=>"frmControl","id"=>"password")); ?>
+		<?php echo Form::submit('Create User'); ?>
+		</form>
+	</div>
+</body>
+</html>

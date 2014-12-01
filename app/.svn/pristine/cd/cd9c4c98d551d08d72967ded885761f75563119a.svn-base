@@ -1,0 +1,25 @@
+<?php echo $__env->make('frontend.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
+<div class="row">
+	<!-- START SIDEBAR -->
+	<div class="large-4 columns">
+		<?php if($page[0]->widget_text !=""): ?>
+		<?php echo Helpers::contact_form($page[0]->id); ?>
+		<?php else: ?>
+		 <p><em>You can put any text here from your sidebar page tempalte widget area</em></p>
+		<?php endif; ?>
+	</div>
+	<!-- END SIDEBAR -->
+	<div class="large-8 columns">
+		<h4><?php echo ucwords($page[0]->title); ?></h4>
+		<div class="page-content">
+			<p><?php echo $page[0]->details; ?></p>
+		</div>
+	</div>
+</div>
+	
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

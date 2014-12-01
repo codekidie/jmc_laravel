@@ -1,0 +1,159 @@
+<?php $__env->startSection('header'); ?>
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<?php if(isset($page)): ?>
+		<title>Hotel Craze - <?php echo $page[0]->title_tag; ?></title>
+		<meta name="description" content="<?php echo $page[0]->meta_description; ?>">
+		<meta name="keywords" content="<?php echo $page[0]->meta_keywords; ?>">
+	<?php elseif(isset($hotel)): ?>
+		<title>Hotel Craze - <?php echo $hotel->hotel_name; ?></title>
+		<meta name="description" content="<?php echo str_limit($hotel->overview,100); ?>">
+	<?php else: ?>
+		<title>Hotel Craze</title>
+		<meta name="description" content="home page">
+		<meta name="keywords" content="hotel craze,hotel room">
+	<?php endif; ?>
+	
+	<?php echo Skin::stylesheets(); ?>
+	<?php echo LeanSlider::assets(); ?>
+	<link rel="stylesheet" href="<?php echo asset('_assets/frontend/plugins/date-picker/foundation-datepicker.css'); ?>">
+	<!-- <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"> -->
+	<script src="<?php echo asset('_assets/frontend/js/modernizr.js'); ?>"></script>
+	<style>
+     #map-canvas {
+        height: 400px;
+        margin: 0px;
+        padding-bottom: 30px;
+      }
+      #AgodaSearchBoxWrapper{
+      	width: 100%;
+      }
+    </style>
+</head>
+<body>
+	<!-- START ADMIN NAVIGATION -->	
+
+	<?php if(isset($page)): ?> 
+		<?php echo Helper::adminBar($page[0]->id); ?>
+	<?php else: ?>
+		<?php echo Helper::adminBar(); ?>
+	<?php endif; ?>
+	<!-- END ADMIN NAVIGATION -->
+	<!-- START HEADER AREA -->
+	<div class="row">
+
+		<!-- START HEADER SECTION -->
+		<div id="header-section">
+			<!-- START MOBILE SOCIAL MEDIA ICONS -->
+			<div id="social-mobile-media-icns" class="small-7 columns hide-for-medium hide-for-large hide-for-xlarge small-centered">
+				<ul class="inline-list">
+					<li id="fb"><a href="#">facebook</a></li>
+					<li id="ln"><a href="#">linkedin</a></li>
+					<li id="gp"><a href="#">google+</a></li>
+				</ul>
+			</div>
+			<!-- END MOBILE SOCIAL MEDIA ICONS -->
+
+			<!-- START DESKTOP SOCIAL ICONS -->
+			<div id="social-mobile-media-icns" class="large-4 columns hide-for-small hide-for-medium ">
+				<ul class="inline-list">
+					<li id="fb"><a href="#">facebook</a></li>
+					<li id="ln"><a href="#">linkedin</a></li>
+					<li id="gp"><a href="#">google+</a></li>
+				</ul>
+			</div>
+			<!-- END DESKTOP SOCIAL ICONS -->
+
+			<!-- START TRAVELER'S LOGIN -->
+				<div id="traveler_links" class="large-4 columns large-push-4 hide-for-small">
+					<div id="traveler_wrapper">
+						<ul class="inline-list">
+							<li><a href="#">Travelers journal</a></li>
+							<li><a href="#">My Bucket lists</a></li>
+							<!-- <li><a href="#">Create Account</a></li> -->
+							<li><a href="#">Login</a></li>
+						</ul>
+					</div>
+				</div>
+			<!-- END TRAVELER'S LOGIN -->
+			<div class="clearfix"></div>
+			<div class=" large-12 columns">
+				<div class="divider"></div>
+			</div>
+			<div class="clearfix"></div>
+			
+			<!-- START DESKTOP LOGO -->
+			<div id="desktop-logo" class="large-4 columns hide-for-medium">
+				<a href="<?php echo url('/'); ?>"><img src="<?php echo asset('_assets/frontend/images/logo.png'); ?>" alt=""></a>
+				<p>Luxury Travel Just Got A Little Affordable</p>
+			</div>
+			<!-- END DESKTOP LOGO -->
+
+			<!-- START DESKTOP MENU -->
+			<div id="navigation" class="large-8 columns hide-for-medium hide-for-small">
+				<?php Skin::$slug = 'top_menu';?>
+				<ul class="menu">
+					<li <?php if(Request::segment(1) == ""): ?>
+					class="current"
+					<?php endif; ?>><a href="<?php echo url('/'); ?>">Home</a></li>
+					<?php echo Skin::menu(); ?>
+				</ul>
+			</div>
+			<!-- END DESKTOP MENU -->
+
+			<!-- START MOBILE MENU -->
+			<div id="navigation" class="large-8 columns hide-for-medium hide-for-xlarge hide-for-large">
+				<ul class="menu-mobile">
+					<li
+					<?php if(Request::segment(1) ==""): ?>
+					class="current"
+					<?php endif; ?>><a href="<?php echo url('/'); ?>">Home</a></li>
+					<?php echo Skin::menu(); ?>
+				</ul>
+			</div>
+			<!-- END MOBILE MENU -->
+			
+			<div class="large-12 columns hide-for-xlarge hide-for-large hide-for-medium">
+				<div class="divider"></div>
+			</div>
+			<!-- START MOBILE MENU -->
+			<div id="tablet-menu" class="hide-for-xlarge hide-for-large">
+				<!-- START MOBILE NAV BAR -->
+				<nav class="top-bar" data-topbar>
+					  <ul class="title-area">
+					    <li class="name">
+					      <h1><a href="#">Hotel Craze</a></h1>
+					    </li>
+					    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+					  </ul>
+
+					  <section class="top-bar-section">
+					    <!-- Right Nav Section -->
+					    <ul class="right">
+					      <li <?php if(Request::segment(1) ==""): ?>
+					class="current"
+					<?php endif; ?>><a href="<?php echo url('/'); ?>">Home</a></li>
+								<?php echo Skin::menu(); ?>
+					    </ul>
+					    
+					  </section>
+				</nav>
+				<!-- END MOBILE NAV BAR -->
+			</div>
+			<!-- END MOBILE MENU -->
+			
+			<div class="clearfix"></div>
+
+			<?php echo $__env->yieldContent('slider'); ?>
+		</div>
+		<!-- END HEADER SECTION -->
+		<div class="clear clearfix"></div>
+	</div>
+	<!-- END HEADER AREA -->
+	<?php $__env->stopSection(); ?>
+
+<?php $__env->stopSection(); ?>

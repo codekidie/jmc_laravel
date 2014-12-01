@@ -1,0 +1,6 @@
+<h3>From : <?php echo $firstname; ?> <?php echo $lastname; ?></h3>
+<em><?php echo $from; ?></em>
+<br>
+<p>
+	<?php echo e($body); ?>
+</p>

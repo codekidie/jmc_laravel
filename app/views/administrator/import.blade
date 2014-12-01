@@ -1,0 +1,16 @@
+@extends('administrator.master')
+@include('administrator.header')
+  @section('page-content')
+  <div class="row">
+  	<div class="col-lg-12">
+  		{{$errors->first('xls')}}
+		{{Form::open(array("url"=>"/import","files"=>TRUE))}}
+		{{Form::file('xls')}}
+		{{Form::submit('Import')}}
+		{{Form::close()}}
+  	</div>
+  </div>
+  @stop
+@include('administrator.footer')
+
+@stop

@@ -1,0 +1,305 @@
+<?php
+
+class PostController extends BaseController {
+	public function __construct(){
+		$this->beforeFilter("auth",array("only"=>array("index","create","store","destroy","edit","update")));
+		$this->beforeFilter("is_admin_active",array("only"=>array("create","store","destroy")));
+	}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$data = array('page_title'=>'Posts',
+					  'posts'=>Post::all(),
+					  'categories'=>Category::orderBy('name')->get());
+		return View::make('administrator.posts.index',$data);
+	}
+
+	public function getJsonPosts(){
+		if(Request::ajax()){
+			$keyword = Input::get('keyword');
+			if($keyword !="all"){
+				$posts = Post::where('title','LIKE',"%$keyword%")->get();
+			}else{
+				$posts = Post::orderBy('title','ASC')->get();
+			}
+			
+			if(count($posts) > 0){
+				return $posts;
+			}
+			else{
+				return 0;
+			}
+		}else{
+			return Redirect::to('404');
+		}
+	}
+
+	// ATTACH IMAGE TO POST
+	public function attachImageToPost(){
+		$input = Input::all();
+		$post = Post::find($input['post_id']);
+		$image = Image::find($input['image_id']);
+		if($image->post()->save($post)){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		$images = Photo::selectImageNoAttachments();
+		$data = array('page_title'=>'Create New Post',
+					  'categories'=>Category::orderBy('name')->get(),
+					  'images'=>$images);
+		return View::make('administrator.posts.create',$data);
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+
+		$data = Input::all();
+		$rules = array('title'=>'required|unique:posts',
+					   'content'=>'required',
+					   'meta_title'=>'required');
+		$message = array("required"=>Helpers::errorLabel(" is required!"),
+			             "unique"=>Helpers::errorLabel(" has been taken!"));
+		$v = Validator::make($data,$rules,$message);
+		if($v->fails()){
+			return Redirect::to('administrator/post/create')->withErrors($v)->withInput();
+		}
+		else{
+			$p = new Post;
+			$p->title = $data['title'];
+			if($data['slug'] ==""){
+				$p->slug = Helpers::slug($data['title']);
+			}
+			else{
+				$p->slug = $data['slug'];
+			}
+			$p->content = $data['content'];
+			$p->seo_title = $data['meta_title'];
+			$p->meta_description = $data['meta_description'];
+			$p->meta_keywords = $data['meta_keywords'];
+			$p->template = $data['template'];
+			// check if the date selector is not empty
+			if($data['date-select'] ==""){
+				$p->created_at = Helpers::currentDateTime();
+			}else{
+				$p->created_at = $data['date-select']." ".date("G:i:s");
+			}
+			if(isset($data['draft'])){
+				$p->status = 0;
+			}elseif(isset($data['publish'])){
+				$p->status = 1;
+			}
+			$p->save();
+			// ASSIGN NEW CATEGORY
+			//If there is no category selected then assign default category
+			if(count(Input::get('category')) == 0){
+				$cat = Category::where("name","uncategorized")->get();
+				if($cat){
+					foreach($cat as $c){
+						$catID = $c->id;
+						$p->categories()->attach($catID);
+					}
+				}
+			}
+			else{
+				foreach(Input::get('category') as $category){
+					$cat = new Category;
+					$cat_exist = Category::where("name",$category)->get();
+					//if there are result greater than 0
+					//attach relationship only, it will not create new category
+					if(count($cat_exist) > 0){
+						 $p->categories()->attach($cat_exist[0]->id);
+					}
+					//if the category(s) does not exists then create a new category
+					//then attach the category
+					else{
+						$cat->name = $category;
+						$cat->save();
+						$p->categories()->attach($cat);
+					}
+				}//end foreach
+			}
+			// Attach Featured Image
+			if($data['image_id'] != ""){
+				$image_id = $data['image_id'];
+				$image = Image::find($image_id);
+				$image->post()->save($p);
+			}
+			Session::flash('message',Helpers::message("Successfully Published!"));
+			return Redirect::to('administrator/post/create');
+		}
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$p = Post::find($id);
+		$data = array("page_title"=>$p->title,
+					  "post"=>$p);
+		return View::make('frontend.post.single',$data);
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// Select a post by its post_id
+		$p = Post::find($id);
+		// Select all categories with a post relationship
+		$post_categories = $p->categories;
+		// assign a result to array
+		$result = array();
+		// retrieve the category IDs that has relationship with 
+		// the current post selected. Then assign to result array
+		foreach($post_categories as $category){
+			$result[] = $category->id;
+		}
+		/* Select all the categories that do not have a relationship
+		   with the current post_id
+		*/
+		$cats = Category::whereNotIn('id',$result)->get();
+		/* If the current post_id exists then send to view*/
+
+		/* Select all images that does not have an attachments*/
+		$images = Photo::selectImageNoAttachments();
+
+		if($p){
+			$data = array('page_title'=>'Edit Post',
+						  'post'=> $p,
+						  'categories'=>$cats,
+						  'post_categories'=>$post_categories,
+						  'images' => $images);
+			return View::make('administrator.posts.edit',$data);
+		}
+		/* If post_id does not exists then generate a 404 page*/
+		else{
+			return Redirect::to('404');
+		}
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update()
+	{
+		$data = Input::all();
+		$categorIDs = Input::get('category');
+		$post_id = Input::get('post_id');
+		$p = Post::find($post_id);
+		$p->title = $data['title'];
+			if($data['slug'] ==""){
+				$p->slug = Helpers::slug($data['title']);
+			}
+			else{
+				$p->slug = $data['slug'];
+			}
+		$p->content = $data['content'];
+		$p->seo_title = $data['meta_title'];
+		$p->meta_description = $data['meta_description'];
+		$p->meta_keywords = $data['meta_keywords'];
+		$p->template = $data['template'];
+			// check if the date selector is not empty
+			if($data['date-select'] ==""){
+				$p->created_at = Helpers::currentDateTime();
+			}else{
+				$p->created_at = $data['date-select']." ".date("G:i:s");
+			}
+			if(isset($data['draft'])){
+				$p->status = 0;
+			}elseif(isset($data['publish'])){
+				$p->status = 1;
+			}
+		$p->save();
+		// Attach Featured Image
+			if($data['image_id'] != "" || isset($data['image_id'])){
+				$image_id = $data['image_id'];
+				$image = Image::find($image_id);
+				$image->post()->save($p);
+			}
+		Session::flash('message',Helpers::message('Successfully Updated!'));
+		/* If there are categories selected then sync in with the selected
+		   category*/
+		if(count($categorIDs) > 0){
+			$p->categories()->sync($categorIDs);
+		}
+		/* If there is no category selected then sync default category*/
+		else{
+			$p->categories()->sync(array(29));
+		}
+		return Redirect::to('administrator/post/edit/'.$post_id);
+	}
+
+	public function update_status($id)
+	{
+		$p = Post::find($id);
+		if($p->status == 1)
+		{
+			$p->status = 0;
+			$status = 'Draft';
+		}
+		else{
+			$p->status = 1;
+			$status = 'Published';
+		}
+		$p->save();
+		Session::flash('message',Helpers::message(ucwords($p->title).' Status Successfully Updated to '. $status));
+		return Redirect::to('administrator/posts');
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		$p = Post::find($id)->delete();
+		return Redirect::to("administrator/posts");
+	}
+	public function destroy_all(){
+		$data = Input::get('page');
+		if(count($data) > 0){
+			foreach($data as $post){
+				$p = Post::find($post);
+				$p->categories()->detach($p);
+				$p->delete();
+			}
+			Session::flash('message',Helpers::message('Successfully Deleted!'));
+			return Redirect::to('administrator/posts');
+		}
+		else{
+			return Redirect::to('administrator/posts');
+		}
+	}
+
+}

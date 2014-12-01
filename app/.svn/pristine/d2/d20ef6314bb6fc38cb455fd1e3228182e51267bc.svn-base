@@ -1,0 +1,176 @@
+<?php $__env->startSection('slider'); ?>
+<!-- START DESKTOP/MOBILE SLIDER -->
+			<?php echo Fz::col8(); ?>
+			<?php echo LeanSlider::show(21); ?>  
+    		</div>
+			<!-- END DESKTOP/MOBILE SLIDER -->
+			<!-- START DESKTOP/MOBILE BOOKING FORM  -->
+			<div id="booking-form" class="large-4 columns">
+				<h4>Book a Hotel Room</h4>
+				<div id='agoda_searchbox'><img src='http://ajaxsearch.partners.agoda.com/affiliates/images/ajaxloader.gif' width='32' height='32' alt='Loading search box ...'/></div></div>
+				<script type='text/javascript' src='http://ajaxsearch.partners.agoda.com/affiliates/js/agoda_search.js'></script>
+				<script type='text/javascript'>
+				var so = new SrchObject();
+				so.clientID('0');
+				so.addParam('usecal','true');
+				so.addParam('hidehotel','true');
+				so.addParam('countryid','');
+				so.addParam('headerlink','http://www.hotelcraze.com/agoda_header.php');
+				so.addParam('footerlink','http://www.hotelcraze.com/agoda_footer.php');
+				so.addParam('backlink','http://www.hotelcraze.com/');
+				so.displaySearch('agoda_searchbox');
+				</script>
+			</div>
+			<!-- END DESKTOP/MOBILE BOOKING FORM  -->
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
+
+	
+	<!-- START DESKTOP FEATURED SERVICES -->
+	<div id="desktop-featured-services" class="hide-for-small">
+		<?php echo Fz::row(); ?>
+				<!-- START HOTEL SERVICE 1 -->
+				<?php echo Fz::col4(null,'services bullcap'); ?>
+				<a href="#" class="desktop-services">
+					<img src="<?php echo asset('frontend/images/suitcase.png'); ?>" alt="" class="floatl">
+					<h3>Hotel Offers</h3>
+				</a>
+				<?php echo Fz::end(); ?> 
+				<!-- END HOTEL SERVICES 1 -->
+			<div class="small-4 columns services">
+				<a href="#" class="desktop-services">
+					<img src="<?php echo asset('frontend/images/plane-2.png'); ?>" alt="">
+					<h3>Packages & Flights</h3>
+				</a>
+			</div>
+			<div class="small-4 columns services">
+				<a href="#" class="desktop-services">
+					<img src="<?php echo asset('frontend/images/smile-1.png'); ?>" alt="">
+					<h3>Tips & Advice</h3>
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- END DESKTOP FEATURED SERVICES -->
+
+	<!-- START MOBILE FEATURED SERVICES  -->
+	<div id="mobile-featured-services" class="hide-for-large hide-for-xlarge hide-for-medium">
+		<div class="row">
+			<div class="small-4 columns">
+				<a href="#" class="mobile-services"><img src="<?php echo asset('frontend/images/suitcase.png'); ?>" alt=""></a>
+			</div>
+			<div class="small-4 columns">
+				<a href="#" class="mobile-services"><img src="<?php echo asset('frontend/images/plane-2.png'); ?>" alt=""></a>
+			</div>
+			<div class="small-4 columns">
+				<a href="#" class="mobile-services"><img src="<?php echo asset('frontend/images/smile-1.png'); ?>" alt=""></a>
+			</div>
+		</div>
+	</div>
+	<!-- END FEATURED SERVICES -->
+
+	<!-- START FEATURED HOTELS -->
+	<div id="featured-hotels">
+		<div class="row">
+			<div class="large-4 columns">
+				<a href="#" class="th"><img src="<?php echo asset('frontend/images/featured-hotel/h1.png'); ?>" alt=""></a>
+				<div class="floatr">
+					<p class="feature-hotel-title">Carlton City Hotel</p>
+					<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin...</p>
+				</div>
+			</div>
+			<div class="large-4 columns">
+				<a href="#" class="th"><img src="<?php echo asset('frontend/images/featured-hotel/h2.png'); ?>" alt=""></a>
+				<div class="floatr">
+					<p class="feature-hotel-title">Mandarin Orchard</p>
+					<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin...</p>
+				</div>
+			</div>
+			<div class="large-4 columns">
+				<a href="#" class="th"><img src="<?php echo asset('frontend/images/featured-hotel/h3.png'); ?>" alt=""></a>
+				<div class="floatr">
+					<p class="feature-hotel-title">Marina Bay Sands</p>
+					<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END FEATURED HOTELS -->
+
+	
+
+	<!-- START TOP TRAVEL DESTINATIONS -->
+	<div  id="top-destinations" class="hide-for-medium">
+		<div class="row">
+			<div class="large-12 columns">
+				<h3>Top Travel Destinations</h3>
+			</div>
+			<?php $count = 0;?>
+			<?php foreach($hotels as $hotel): ?>
+			<?php $count += 1;?>
+			<div class="large-6 columns">
+				<a href="<?php echo $hotel->photo1; ?>"  data-lightbox="image-<?php echo $hotel->id; ?>" data-title="<?php echo $hotel->title; ?>" class="th floatl" target="_blank" title="<?php echo $hotel->title; ?>"><img src="<?php echo $hotel->photo1; ?>" alt=""></a>
+				<div class="large-6 columns">
+					<h4 class="tt-header">
+						<a href="<?php echo url(Helper::slug($hotel->continent_name).'/'.Helper::slug($hotel->country).'/'.Helper::slug($hotel->city).'/'.$hotel->slug); ?>" title="<?php echo $hotel->hotel_name; ?>"><?php echo str_limit($hotel->hotel_name,20); ?></a>
+					</h4>
+					<span><?php echo Skin::starRating(ceil($hotel->rating_average)); ?></span>
+					<p>
+						<?php echo str_limit($hotel->overview,180); ?>
+						<p><a href="<?php echo url(Helper::slug($hotel->continent_name).'/'.Helper::slug($hotel->country).'/'.Helper::slug($hotel->city).'/'.$hotel->slug); ?>" title="<?php echo $hotel->hotel_name; ?>" target="_blank">Learn More &rarr;</a></p>
+					</p>
+				</div>
+			</div>
+			<?php if($count == 4): ?>
+				<div class="clearfix"></div>
+			<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<!-- END TOP TRAVEL DESTINATIONS -->
+
+	<!-- START TABLET TOP TRAVEL DESTINATIONS -->
+	<div  id="top-destinations" class="hide-for-small hide-for-large hide-for-xlarge">
+		<div class="row">
+			<div class="large-12 columns">
+				<h3>Top Travel Destinations</h3>
+			</div>
+			<?php $count = 0;?>
+			<?php foreach($hotels as $hotel): ?>
+			<?php $count += 1;?>
+			<div class="large-6 columns">
+				<a href="<?php echo $hotel->photo1; ?>" data-lightbox="image-1" data-title="My caption" class="th floatl" target="_blank" title="<?php echo $hotel->title; ?>"><img src="<?php echo $hotel->photo1; ?>" alt=""></a>
+				<div class="large-6 columns">
+					<h4 class="tt-header">
+						<a href="http://agoda.com<?php echo $hotel->url; ?>"><?php echo str_limit($hotel->hotel_name,20); ?></a>
+					</h4>
+					<span><?php echo Skin::starRating(ceil($hotel->rating_average)); ?></span>
+					<p>
+						<?php echo str_limit($hotel->overview,180); ?>
+						<p><a href="http://agoda.com<?php echo $hotel->url; ?>" target="_blank">Learn More &rarr;</a></p>
+					</p>
+				</div>
+			</div>
+			<?php if($count == 4): ?>
+				<div class="clearfix"></div>
+			<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<!-- END TABLET TOP TRAVEL DESTINATIONS -->
+
+	<!-- START MODAL -->
+	<!-- Modal -->
+<div id="myModal" class="reveal-modal" data-reveal>
+  <div class="large-6 columns">
+  	
+  </div>
+  <div class="large-6 columns"></div>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+	<!-- END MODAL -->
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

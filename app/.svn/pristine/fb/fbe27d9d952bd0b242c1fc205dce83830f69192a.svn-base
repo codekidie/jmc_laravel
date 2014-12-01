@@ -1,0 +1,11 @@
+<?php echo $__env->make('administrator.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->startSection('header'); ?>
+		<h1>The Header</h1>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('page-content'); ?>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, error, accusamus dicta libero earum cum aliquid consequuntur consequatur veritatis saepe perspiciatis provident perferendis suscipit autem ea quod reprehenderit quibusdam quos.</p>
+	<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

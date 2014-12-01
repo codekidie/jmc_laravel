@@ -1,0 +1,68 @@
+@extends('frontend.master')
+@include('frontend.header')
+	@section('content')
+	<div class="row">
+		<!-- START TOP TRAVEL DESTINATIONS -->
+		<div  id="top-destinations" class="hide-for-medium">
+	
+				<!-- START BREADCRUMBS -->
+				<div class="large-12 columns">
+					<h3>Hotels in {{Helper::unslug(Request::segment(1))}}</h3>
+					<ul class="breadcrumbs">
+					  <li><a href="{{url('/')}}">Home</a></li>
+					  <li class="current">{{Helper::unslug(Request::segment(1))}}</li>
+					</ul>
+				</div>
+				<!-- END BREADCRUMBS -->
+				<div class="large-8 columns">
+					
+					<br>
+					<?php $count = 0;?>
+					@foreach($hotels as $hotel)
+					<?php $count += 1;?>
+					<div class="large-4 columns">
+					<a href="{{$hotel->photo1}}"  data-lightbox="image-{{$hotel->id}}" data-title="{{$hotel->title}}" class="th floatl" target="_blank" title="{{$hotel->title}}"><img src="{{$hotel->photo1}}" alt=""></a>
+					<div >
+						<h4 class="tt-header">
+							<a href="{{url(Helper::slug($hotel->continent_name).'/'.Helper::slug($hotel->country).'/'.Helper::slug($hotel->city).'/'.$hotel->slug)}}" title="{{$hotel->hotel_name}}">{{str_limit($hotel->hotel_name,20)}}</a>
+						</h4>
+						<span>{{Skin::starRating(ceil($hotel->rating_average))}}</span>
+						<p>
+							{{str_limit($hotel->overview,120)}}
+							<p><a href="{{url(Helper::slug($hotel->continent_name).'/'.Helper::slug($hotel->country).'/'.Helper::slug($hotel->city).'/'.$hotel->slug)}}" title="{{$hotel->hotel_name}}" target="_blank">Learn More &rarr;</a></p>
+						</p>
+					</div>
+					</div>
+					@if($count ==3 || $count == 9)
+						<div class="clearfix"></div>
+					@endif
+					@endforeach
+					<div class="clearfix"></div>
+					<div class="large-12 columns">
+						{{$hotels->links()}}
+					</div></div>
+				<!-- SIDEBAR -->
+				<div class="large-4 column">
+					<h4>Cities in {{Helper::unslug(Request::segment(1))}}</h4>
+					<div class="divider"></div>
+					<ul class="marker">
+					@foreach($cities as $get)
+						<li>
+							<a href="{{url(Helper::slug(Request::segment(1)).'/'.Helper::slug($get->country).'/'.Helper::slug($get->city))}}">
+							{{$get->city}} ({{Hotel::countHotelsbyCity($get->city)}})
+							</a>
+						</li>
+					@endforeach
+					</ul>
+					<br><br>
+					<a href="">View All Cities in {{Helper::unslug(Request::segment(1))}} &rarr;</a>
+					<br>
+					<img class="ads-link" src="{{asset('frontend/images/AgodaLogo.jpg')}}" width="458" height="258" alt="Exclusive Agoda Partner">
+				</div>
+				<!-- END SIDEBAR -->
+		</div>
+		<!-- END TOP TRAVEL DESTINATIONS -->
+	</div>
+	@stop
+@include('frontend.footer')
+@stop

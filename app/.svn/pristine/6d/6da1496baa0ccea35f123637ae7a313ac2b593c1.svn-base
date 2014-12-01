@@ -1,0 +1,5 @@
+<?php echo Session::get('status'); ?>
+<?php echo Form::open(array("url"=>"mypass")); ?>
+<?php echo Form::text('email','',array('class'=>'clearfix')); ?>
+<?php echo Form::submit('Remind Password'); ?>
+<?php echo Form::close(); ?>

@@ -1,0 +1,126 @@
+@section('footer')
+	<!-- START FOOTER -->
+	<div id="footer">
+		<div class="row">
+			<!-- START WIDGETS -->
+			<div class="large-3 columns hide-for-medium widget">
+				<a href="#"><img src="{{asset('_assets/frontend/images/Logo-m.png')}}" alt=""></a><br>
+				<p>Your about us information would fit here nicely.<br> 
+				  You could also just have an overview and use the link below to link to you full about us page.
+				 <p><a href="#">Find out more &raquo;</a></p> 
+				</p>
+			</div>
+			<div class="large-3 columns hide-for-medium widget">
+				<p class="footer-title">BEST PICK OF THE MONTH</p>
+				<a href="#"><img src="{{asset('_assets/frontend/images/featured-hotel/footer-featured.png')}}" alt=""></a>
+				<p><span class="stand_out">Echo Beach & Town Houses</span></p>
+			</div>
+			<div class="large-3 columns hide-for-medium widget">
+				<p class="footer-title">latest post</p>
+				<p class="latest-title">Your article title copy should fit here nicely!</p>
+				<p class="footer-post-info"><em>May 22, 2014 • 1 Comment</em></p>
+				<p>
+					This would be a great place to stick a descriptive excerpt from your insanley awesome article.
+					<br><a href="">Continue Reading &rarr;</a>
+				</p>
+			</div>
+			<div class="large-3 hide-for-medium columns">
+				<p class="footer-title">traveler's photo</p>
+				<ul class="small-block-grid-3" data-clearing>
+				  <li><a href="{{asset('_assets/frontend/images/featured-gallery/1.jpg')}}" class="th"><img data-caption="Marina Bay Sands" src="{{asset('_assets/frontend/images/featured-gallery/1.jpg')}}"></a></li>
+				  <li><a href="{{asset('_assets/frontend/images/featured-gallery/2.jpg')}}" class="th"><img data-caption="Mandarin Hotel" src="{{asset('_assets/frontend/images/featured-gallery/2.jpg')}}"></a></li>
+				  <li><a href="{{asset('frontend/images/featured-gallery/3.jpg')}}" class="th"><img data-caption="Hotel 1" src="{{asset('_assets/frontend/images/featured-gallery/3.jpg')}}"></a></li>
+				  <li><a href="{{asset('_assets/frontend/images/featured-gallery/4.jpg')}}" class="th"><img data-caption="Hotel 2" src="{{asset('_assets/frontend/images/featured-gallery/4.jpg')}}"></a></li>
+				  <li><a href="{{asset('_assets/frontend/images/featured-gallery/5.jpg')}}" class="th"><img data-caption="Hotel 3" src="{{asset('_assets/frontend/images/featured-gallery/5.jpg')}}"></a></li>
+				  <li><a href="{{asset('frontend/images/featured-gallery/6.jpg')}}" class="th"><img data-caption="Hotel 4" src="{{asset('_assets/frontend/images/featured-gallery/6.jpg')}}"></a></li>
+				</ul>
+			</div>
+			<!-- END WIDGETS -->
+
+			<!-- START TABLET WIDGETS -->
+			<div class="small-4 columns hide-for-small hide-for-large hide-for-xlarge widget">
+				<a href="#"><img src="_assets/frontend/images/Logo-m.png" alt=""></a><br>
+				<p>Your about us information would fit here nicely.<br> 
+				  You could also just have an overview and use the link below to link to you full about us page.
+				 <p><a href="#">Find out more &raquo;</a></p> 
+				</p>
+			</div>
+			<div class="small-4 columns hide-for-small hide-for-large hide-for-xlarge widget">
+				<p class="footer-title">BEST PICK OF THE MONTH</p>
+				<a href="#"><img src="_assets/frontend/images/featured-hotel/footer-featured.png" alt=""></a>
+				<p><span class="stand_out">Echo Beach & Town Houses</span></p>
+			</div>
+			<div class="small-4 columns hide-for-small hide-for-large hide-for-xlarge widget">
+				<p class="footer-title">latest post</p>
+				<p class="latest-title">Your article title copy should fit here nicely!</p>
+				<p class="footer-post-info"><em>May 22, 2014 • 1 Comment</em></p>
+				<p>
+					This would be a great place to stick a descriptive excerpt from your insanley awesome article.
+					<br><a href="">Continue Reading &rarr;</a>
+				</p>
+			</div>
+			<!-- END TABLET WIDGETS -->
+		</div>
+		<!-- START COPYRIGHT -->
+		<div id="copyright">
+			<!-- START  COPYRIGHT -->
+			<div class="row hide-for-medium">
+				<div class="large-5 columns">
+					<p>Copyright @ 2014 All rights reserved by HotelCraze.com</p>
+				</div>
+				<div class="large-6 columns">
+					<ul class="inline-list">
+						<li><a href="{{url('/')}}">Home</a></li>
+						{{Skin::menu()}}
+					</ul>
+				</div>
+			</div>
+
+			<!-- START  TABLET COPYRIGHT -->
+			<div class="row hide-for-small hide-for-large hide-for-xlarge">
+				<div class="small-5 columns">
+					<p>Copyright @ 2014 All rights reserved by HotelCraze.com</p>
+				</div>
+				<div class="small-7 columns">
+					<ul class="inline-list">
+						<li><a href="{{url('/')}}">Home</a></li>
+						{{Skin::menu()}}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- END TABLET COPYRIGHT -->
+		</div>
+		<!-- END  COPYRIGHT -->
+
+		
+	</div>
+	<!-- END FOOTER -->
+
+	{{Skin::js()}}
+	{{LeanSlider::js()}}
+	{{Map::js()}}
+	@if(isset($hotel))
+		{{Map::setMap($hotel->latitude,$hotel->longitude,15)}}
+	@endif
+	<script>
+		(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=559622547479429&version=v2.0";
+		  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	</script>
+ </body>
+<script>
+      $(document).foundation();
+</script>
+<script>
+$("document").ready(function(){
+	$(".related-hotel:nth-of-type(even)").after('<div class="clear clearfix"></div>');
+});
+</script>
+{{LeanSlider::script()}}
+</html>
+@stop

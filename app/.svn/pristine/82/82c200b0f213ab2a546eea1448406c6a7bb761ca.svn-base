@@ -1,0 +1,115 @@
+<?php
+
+class FrontendController extends BaseController {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index(){	
+		$pages = Page::all();
+		$page = "Home Page";
+		$hotels = $this->randomHotels();
+		$data = array('page_title'=>'Home',
+					  'pages'=>$pages,
+					  'hotels'=>$hotels);
+
+		return View::make('frontend.index',$data);
+	}
+	private function randomHotels(){
+		$h = Hotel::orderBy(DB::raw('RAND()'))->limit(6)->get();
+		return $h;
+	}
+	public function hotel($country,$city,$slug){
+		$continent = Helper::unslug(Request::segment(1));
+		$hotel = Hotel::getHotelSpecific($continent,$country,$city,$slug);
+		$related_hotels = Hotel::getRelatedHotels($hotel[0]->hotel_name,$hotel[0]->country);
+		$cities = Hotel::getAllCitiesbyCountry($country);
+		Traffic::generate($hotel[0]->id);
+		$total_traffic = Traffic::countTrafficbyID($hotel[0]->id);
+		
+		// scrape content from agoda
+		$dom = HtmlDom::file_get_html('http://www.agoda.com'.$hotel[0]->url);
+		$photos = $dom->find(".photo > table tr img");
+		$features = $dom->find(".content_facility");
+		$reviews = $dom->find(".hotelreviewlist");
+		// Twitter Feeds
+		$t = Twitter::getSearch(array('q' => $hotel[0]->hotel_name, 'count' => 5, 'format' => 'json'));
+		$response = json_decode($t,true);
+ 		if(count($response['statuses']) == 0){
+ 			$timeline = Twitter::getUserTimeline(array('screen_name' => 'hotelcrazedepot', 'count' => 5, 'format' => 'json'));
+ 			$response = json_decode($timeline,true);
+ 			$tweets = $response; 	
+ 		}
+ 		else{
+			$response = json_decode($t,true);
+			$replacement = "<a href='\\0'>\\0</a>";
+			$tweets = $response['statuses'];
+ 		}
+		$data = array("page_title"=>$hotel[0]->hotel_name,
+					  "hotel"=>$hotel[0],
+					  "related_hotels"=>$related_hotels,
+					  "total_traffic"=>$total_traffic,
+					  "cities"=>$cities,
+					  "photos"=>$photos,
+					  "features"=>$features,
+					  "reviews"=>$reviews,
+					  "tweets"=>$tweets);
+		return View::make('frontend.hotel.index',$data);
+	}
+	public function hotelContinent(){
+		$continent = Helper::unslug(Request::segment(1));
+		$hotels = Hotel::getAllHotelsbyContinent($continent);
+		$cities = Hotel::getAllCitiesbyContinent($continent);
+		$data = array("page_title"=>ucwords($continent),
+					  "hotels"=>$hotels,
+					  "cities"=>$cities);
+		return View::make('frontend.hotel.continent',$data);
+	}
+	public function hotelCountry($country){
+		$continent = Request::segment(1);
+		$hotels = Hotel::getAllHotelsbyCountry($continent,$country);
+		$cities = Hotel::getAllCitiesbyCountry($country);
+		$data = array('page_title'=>Helper::unslug($country),
+					  'hotels'=>$hotels,
+					  "cities"=>$cities);
+		return View::make('frontend.hotel.country',$data);
+	}
+	public function hotelCity($country,$city){
+		$continent = Helper::unslug(Request::segment(1));
+		$hotels = Hotel::getAllHotelsbyCity($continent,$country,$city);
+		$cities = Hotel::getAllCitiesbyCountry($country);
+		$data = array('page_title'=>Helper::unslug($city),
+					  'hotels'=>$hotels,
+					  "cities"=>$cities);
+		return View::make('frontend.hotel.city',$data);
+	}
+	public function page($page){
+		$p = Page::where('slug',$page)->get();
+		$data = array('page_title'=>ucwords($p[0]->title),
+					  'page'=>$p);
+		switch ($p[0]->template) {
+			case 'default':
+				return View::make('frontend.page.index',$data);
+				break;
+			case 'full_width':
+				return View::make('frontend.page.full_width',$data);
+				break;
+			case 'right_sidebar':
+				return View::make('frontend.page.right_sidebar',$data);
+				break;
+			case 'left_sidebar':
+				return View::make('frontend.page.left_sidebar',$data);
+				break;
+			default:
+				return Redirect::to('404');
+				break;
+		}
+	}
+
+	public function fbconnect(){
+		return View::make('frontend.facebook');
+	}
+
+}

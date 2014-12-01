@@ -1,0 +1,35 @@
+@extends('frontend.master')
+@include('frontend.header')
+@section('content')
+<div class="row">
+	<div class="large-12 columns">
+		<h4>{{ucwords($page[0]->title)}}</h4>
+		<ul class="breadcrumbs">
+		  <li><a href="{{url('/')}}">Home</a></li>
+		  <li class="current">{{Helper::unslug(Request::segment(2))}}</li>
+		</ul>
+	</div>
+	<div class="large-8 columns">
+		
+		<div class="page-content">
+			{{Skin::contact_form($page[0]->id)}}
+			<p>{{$page[0]->details}}</p>
+		</div>
+	</div>
+	<!-- START SIDEBAR -->
+	<div class="large-4 columns">
+		@if($page[0]->widget_text !="")
+		{{$page[0]->widget_text}}
+		@else
+			@if(Auth::check())
+		 <p><em>You can put any text here from your sidebar page tempalte widget area</em></p>
+		 	@endif
+		@endif
+	</div>
+	<!-- END SIDEBAR -->
+</div>
+	
+</div>
+@stop
+@include('frontend.footer')
+@stop

@@ -1,0 +1,206 @@
+<?php
+
+class PageController extends BaseController {
+	public function __construct(){
+		$this->beforeFilter("auth",array("only"=>array("index","create","store","edit","update","destroy")));
+		$this->beforeFilter("is_admin_active",array("only"=>array("create","store","destroy")));
+	}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$p = Page::all();
+		$data = array("page_title"=>"Pages",
+					  "pages"=>$p);
+		return View::make("administrator.page.index",$data);
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		
+		$pages = Page::all();
+		$data = array('page_title'=>'Create Page','pages'=>$pages);
+		return View::make('administrator.page.create',$data);
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{	
+		$data = Input::all();
+		$rules = array("title"=>"required|unique:pages",
+					   "slug"=>"unique:pages",
+					   "details"=>"required",
+					   "meta_title"=>"required",
+					   "meta_description"=>"required",
+					   "meta_keywords"=>"required");
+		$message = array("required"=>Helpers::errorLabel("is requred"));
+		$v = Validator::make($data,$rules,$message);
+		if($v->fails()){
+			return Redirect::to('administrator/page/create')->withErrors($v)->withInput();
+		}else{
+
+			$page = new Page;
+			$page->title = $data['title'];
+			if($data['form_active'] == ""){
+				$page->form_active = 0;
+			}else{
+				$page->form_active = $data['form_active'];
+			}
+			$page->slug = Helpers::slug($data['slug']);
+			$page->details = $data['details'];
+			if($data['slug'] == ""){
+				$page->slug = Helpers::slug(strtolower($data['title']));
+			}
+			$page->title_tag = $data['meta_title'];
+			if(Input::get('publish')): $page->status = 1;endif;
+			if(Input::get('draft')): $page->status = 0;endif;
+			$page->created_at = Helpers::currentDateTime();
+			$page->meta_description = $data['meta_description'];
+			$page->meta_keywords = $data['meta_keywords'];
+			$page->template = $data['template'];
+			$page->widget_text = $data['text_widget'];
+			$page->save();
+			Session::flash('message',Helpers::message('Added New Page Successfully!'));
+			return Redirect::to('administrator/page/edit/'.$page->id);
+			
+		}//end else of Validation check
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id=null)
+	{
+		$page = Page::find($id);
+		$pages = Page::all();
+		$data = array('page_title'=>'Edit Page',
+					  'page'=>Page::find($id),
+					  'pages'=>$pages);
+		if($page){
+			return View::make('administrator.page.edit',$data);
+		}else{
+			return Redirect::to('404');
+		}
+		
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update()
+	{
+		// Validate
+		$data = Input::all();
+		$rules = array("title"=>"required",
+					   "slug"=>"required",
+					   "details"=>"required",
+					   "meta_title"=>"required",
+					   "meta_description"=>"required",
+					   "meta_keywords"=>"required");
+		$message = array("required"=>Helpers::errorLabel("is requred"));
+		$v = Validator::make($data,$rules,$message);
+		if($v->fails()){
+			return Redirect::to('administrator/page/edit/'.Input::get('page_id'))->withErrors($v)->withInput();
+		}else{
+			$page = Page::find(Input::get('page_id'));
+			$page->title = $data['title'];
+			$page->slug = Helpers::slug($data['slug']);
+			if(Input::get('publish') || Input::get('update')): $page->status = 1;endif;
+			if(Input::get('draft')): $page->status = 0;endif;
+			$page->details = $data['details'];
+			$page->template = Input::get('template');
+			if($data['slug'] == ""){
+				$page->slug = Helpers::slug(strtolower($data['title']));
+			}
+			$page->form_active = $data['form_active'];
+			$page->title_tag = $data['meta_title'];
+			if(Input::get('draft_page')): $page->status = 1;endif;
+			if(Input::get('update_page')): $page->status = 0;endif;
+			$page->created_at = Helpers::currentDateTime();
+			$page->meta_description = $data['meta_description'];
+			$page->meta_keywords = $data['meta_keywords'];
+			$page->widget_text = $data['text_widget'];
+			$page->save();
+
+			Session::flash('message',Helpers::message('Successfully Updated'));
+			return Redirect::to('administrator/page/edit/'.$data['page_id']);
+		
+		}//end else
+	}
+	public function update_status($id)
+	{
+		$p = Page::find($id);
+		if($p->status == 1)
+		{
+			$p->status = 0;
+			$status = 'Draft';
+		}
+		else{
+			$p->status = 1;
+			$status = 'Published';
+		}
+		$p->save();
+		Session::flash('message',Helpers::message(ucwords($p->title).' Status Successfully Updated to '. $status));
+		return Redirect::to('administrator/page');
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		$p = Page::find($id);
+		$p->keywords()->detach($p);
+		$p->delete();
+		Session::flash('message',Helpers::message('Successfully Deleted!'));
+		return Redirect::to('administrator/page');
+	}
+
+	public function destroy_all(){
+		$data = Input::get('page');
+		if(count($data) > 0){
+			foreach($data as $page){
+				$p = Page::find($page);
+				$p->menus()->detach($p);
+				$p->delete();
+			}
+			Session::flash('message',Helpers::message('Successfully Deleted!'));
+			return Redirect::to('administrator/page');
+		}
+		else{
+			return Redirect::to('administrator/page');
+		}
+	}
+}

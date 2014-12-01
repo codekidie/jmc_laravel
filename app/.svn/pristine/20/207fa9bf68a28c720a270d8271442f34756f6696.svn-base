@@ -1,0 +1,40 @@
+<?php
+
+class LoginController extends BaseController {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		if(! Auth::check()){
+			return View::make('administrator.login');
+		}
+		else{
+			return Redirect::to('administrator');
+		}
+	}
+
+	public function authenticate(){
+		$data = Input::all();
+		$rules = array("username"=>"required","password"=>"required");
+		$v = Validator::make($data,$rules);
+		if($v->fails()){
+			return $v->messages();
+		}
+		else{
+			
+			$data = array("username"=>$data['username'],
+						  "password"=>$data['password']);
+			if(Auth::attempt($data,true)){
+				return 1;
+			}
+			else{
+				return 2;
+			}
+		}
+	}
+
+}

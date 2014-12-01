@@ -1,0 +1,129 @@
+<?php echo $__env->make('administrator.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+  <?php $__env->startSection('page-content'); ?>
+  <div class="row">
+    <div class="col-lg-12">
+            <h1>Profile</h1>
+            <ol class="breadcrumb">
+              <li><a href="<?php echo url('administrator'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+              <li class="active"><i class="fa fa-edit"></i> Profile</li>
+            </ol>
+     </div>
+  	<!-- START USER PROFILE FORM -->
+        <div class="col-lg-4">
+        	<?php echo Session::get('message'); ?>
+        	<h3>User's Profile</h3>
+        	<?php echo Form::open(array('url'=>'profile/update')); ?>
+                <?php echo Form::hidden('user_id',Auth::user()->id); ?>
+        		<div class="form-group">
+        			<label for="">Username</label>
+        			<?php echo $errors->first('username'); ?>
+        			<?php echo Form::text('username',Auth::user()->username,array("class"=>"form-control")); ?>
+        		</div>
+        		<div class="form-group">
+        			<label for="">Email</label>
+        			<?php echo $errors->first('email'); ?>
+        			<?php echo Form::text('email',Auth::user()->email,array("class"=>"form-control")); ?>
+        		</div>
+        		<div class="form-group">
+        			<label for="">First Name</label>
+        			<?php echo $errors->first('firstname'); ?>
+        			<?php echo Form::text('firstname',Auth::user()->firstname,array("class"=>"form-control")); ?>
+        		</div>
+        		<div class="form-group">
+        			<label for="">Last Name</label>
+        			<?php echo $errors->first('lastname'); ?>
+        			<?php echo Form::text('lastname',Auth::user()->lastname,array("class"=>"form-control")); ?>
+        		</div>
+
+	        	<!-- Change Password -->
+        		<div class="form-group">
+        			<h3>Change Your Password</h3>
+        			<label for="">Password</label>
+        			<?php echo Form::password('password',array("class"=>"form-control")); ?>
+        		</div>
+        		<div class="form-group">
+        			<label for="">Confirm</label>
+        			<?php echo Form::password('password_confirmation',array("class"=>"form-control")); ?>
+        		</div>
+
+        		<div class="form-group">
+        			<?php echo Form::submit('Update Profile',array("class"=>"btn btn-primary")); ?>
+        		</div>
+        	<?php echo Form::close(); ?>
+        </div>
+  	<!-- END USER PROFILE FORM -->
+
+    <!-- START CREATE USER PROFILE -->
+        <div class="col-lg-4" id="user-form">
+            <h3>Create New User</h3>
+            <form id="frm_user">
+                <div class="form-group" id="frm_username">
+                <label for="">Username</label>
+                <?php echo Form::text('username','',array("class"=>"form-control",
+                                                 "id"=>"c_username")); ?>
+                </div>
+                <div class="form-group" id="frm_email">
+                    <label for="Email">Email</label>
+                    <?php echo Form::text('email','',array("class"=>"form-control",
+                                                 "id"=>"c_email")); ?>
+                </div>
+                <div class="form-group" id="frm_password">
+                    <label for="password">Password</label>
+                    <?php echo Form::password('password',array("class"=>"form-control",
+                                                 "id"=>"c_password")); ?>
+                </div>
+                <div class="form-group" id="frm_password_confirmation">
+                    <label for="password_confirmation">Confirm Password</label>
+                    <?php echo Form::password('password_confirmation',array("class"=>"form-control",
+                                                 "id"=>"password_confirmation")); ?>
+                </div>
+
+                <div class="form-group" id="frm_firstname">
+                    <label for="firstname">First Name</label>
+                    <?php echo Form::text('firstname','',array("class"=>"form-control",
+                                                 "id"=>"c_firstname")); ?>
+                </div>
+
+                <div class="form-group" id="frm_lastname">
+                    <label for="lastname">Last Name</label>
+                    <?php echo Form::text('lastname','',array("class"=>"form-control",
+                                                 "id"=>"c_lastname")); ?>
+                </div>
+
+                <div class="form-group" id="frm_role">
+                    <label for="role">Select Role</label>
+                    <select name="role" id="c_role" class="form-control">
+                        <option value="admin">Administrator</option>
+                        <option value="power_user">Powe User</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <?php echo Form::submit('Create New User',array("class"=>"btn btn-primary")); ?>
+                </div>
+            </form>
+        </div>
+    <!-- END CREATE USER PROFILE -->
+
+    <!-- START RECENTLY USERS ADDED -->
+        <div class="col-lg-4" id="recent-users">
+            <h3>Registered Users</h3>
+            <table class="table table-bordered table-hover tablesorter">
+                <thead>
+                  <tr>
+                    <th class="header">Users <i class="fa fa-sort"></i></th>
+                    <th class="header"></i>
+                  </tr>
+                </thead>
+                <tbody id="registered_users">
+                  
+                </tbody>
+              </table>
+        </div>
+    <!-- END RECENTLY USERS ADDED -->
+  </div>
+  <?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

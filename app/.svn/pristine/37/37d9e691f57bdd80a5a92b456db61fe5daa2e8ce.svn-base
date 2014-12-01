@@ -1,0 +1,2 @@
+<?php echo $__env->yieldContent('head_start'); ?>
+<h3>Top Score!</h3>

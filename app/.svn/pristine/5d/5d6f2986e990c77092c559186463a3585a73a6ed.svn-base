@@ -1,0 +1,3 @@
+
+<h1>This is the content</h1>
+<?php echo $__env->make('traveler::layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

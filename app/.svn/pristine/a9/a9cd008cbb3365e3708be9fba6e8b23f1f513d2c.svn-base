@@ -1,0 +1,20 @@
+@extends('frontend.master')
+@include('frontend.header')
+@section('content')
+<div class="row">
+	<div class="large-12 columns">
+		<h3>{{ucwords($page[0]->title)}}</h3>
+		<ul class="breadcrumbs">
+		  <li><a href="{{url('/')}}">Home</a></li>
+		  <li class="current">{{Helper::unslug(Request::segment(2))}}</li>
+		</ul>
+		<div class="page-content">
+			<p>{{$page[0]->details}}</p>
+		</div>
+	</div>
+</div>
+	
+</div>
+@stop
+@include('frontend.footer')
+@stop

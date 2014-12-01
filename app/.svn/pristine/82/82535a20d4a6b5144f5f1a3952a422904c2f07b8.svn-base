@@ -1,0 +1,77 @@
+<?php echo $__env->make('administrator.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->startSection('page-content'); ?>
+	<!-- START ROW -->
+	<div class="row">
+    <div class="col-lg-12">
+            <h1>Pages</h1>
+            <ol class="breadcrumb">
+              <li><a href="<?php echo url('administrator'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+              <li class="active"><i class="fa fa-book"></i> Page</li>
+               <?php if(Auth::user()->role == "admin"): ?> 
+              <li class=""><i class="fa fa-book"></i><a href="<?php echo url('administrator/page/create'); ?>">  Create New Page</a></li>
+              <?php endif; ?>
+            </ol>
+            
+          </div>
+		<div class="col-lg-12">
+      
+			<?php echo Session::get('message'); ?>
+			<?php echo Form::open(array('url'=>'administrator/page/delete_selected')); ?>
+			<table class="table table-bordered table-hover table-striped tablesorter">
+				
+                <thead>
+                  <tr>
+                  	<th class="header">
+                  		
+                  	</th>
+                    <th class="header">Title <i class="fa fa-sort"></i></th>
+                    <th class="header">Content <i class="fa fa-sort"></i></th>
+                    <th class="header">Status <i class="fa fa-sort"></i></th>
+                    <th class="header">Date Created <i class="fa fa-sort"></i></th>
+                    <th class="header"></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                	<?php foreach($pages as $p): ?>
+                  <tr>
+                  	<td>
+                  		<input type="checkbox" name="page[]" class="" value="<?php echo $p->id; ?>">
+                  	</td>
+                    <td width="250"><a href="<?php echo url('administrator/page/edit/'.$p->id); ?>"><?php echo ucwords($p->title); ?></a></td>
+                    <td width="400"><?php echo str_limit($p->details,190); ?></td>
+                    <td>
+                      <?php if($p->status == 1): ?>
+                        <a href="<?php echo url('administrator/page/update_status/'.$p->id); ?>"><span class="label label-primary">Published</span></a>
+                      <?php else: ?>
+                        <a href="<?php echo url('administrator/page/update_status/'.$p->id); ?>"><span class="label label-default">Drafted</span></a>
+                      <?php endif; ?>
+                    </td>
+                    <td><?php echo ucwords($p->created_at); ?></td>
+                    <td><a href="<?php echo url('administrator/page/edit/'.$p->id); ?>"><i class="fa fa-pencil"></i> Edit</a> 
+					<?php if(Auth::user()->role == "admin"): ?>|
+           <a href="<?php echo url('administrator/page/delete/'.$p->id); ?>">
+					 	<i class="fa fa-trash-o"></i> Delete
+					 </a>
+          <?php endif; ?>
+                     </td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+                
+              </table>
+             <?php if(Auth::user()->role == "admin"): ?> 
+              <div class="form-group">
+              		<a href="" id="select_all">Select All</a>
+                	<?php echo Form::submit('Delete Selected',array('class'=>'btn btn-success')); ?>
+                  <a href="<?php echo url('administrator/page/create'); ?>" class="btn btn-success">New Page</a>
+                </div>
+            <?php endif; ?>
+                <?php echo Form::close(); ?>
+		</div>
+	</div>
+	<!-- END ROW -->
+	<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('administrator.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

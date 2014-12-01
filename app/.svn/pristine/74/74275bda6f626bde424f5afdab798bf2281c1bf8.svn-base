@@ -1,0 +1,20 @@
+<?php echo $__env->make('frontend.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
+<div class="row">
+	<div class="large-12 columns">
+		<h3><?php echo ucwords($page[0]->title); ?></h3>
+		<ul class="breadcrumbs">
+		  <li><a href="<?php echo url('/'); ?>">Home</a></li>
+		  <li class="current"><?php echo Helper::unslug(Request::segment(2)); ?></li>
+		</ul>
+		<div class="page-content">
+			<p><?php echo $page[0]->details; ?></p>
+		</div>
+	</div>
+</div>
+	
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
