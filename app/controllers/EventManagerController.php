@@ -10,7 +10,10 @@ class EventManagerController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('clientside.events.index')->with('page_title','Events');
+
+		$data['events'] = Event_Manager::all();
+		$data['page_title'] = 'Events';
+		return View::make('clientside.events.index',$data);
 		
 	}
 

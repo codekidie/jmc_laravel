@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2014 at 04:43 AM
+-- Generation Time: Dec 02, 2014 at 04:50 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -66,6 +66,33 @@ CREATE TABLE IF NOT EXISTS `category_post` (
 
 INSERT INTO `category_post` (`id`, `category_id`, `post_id`, `created_at`, `updated_at`) VALUES
 (3, 5, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
+
+CREATE TABLE IF NOT EXISTS `events` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `event_start` text COLLATE utf8_unicode_ci NOT NULL,
+  `event_end` text COLLATE utf8_unicode_ci NOT NULL,
+  `event_details` text COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `location` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `events`
+--
+
+INSERT INTO `events` (`id`, `title`, `event_start`, `event_end`, `event_details`, `created_at`, `updated_at`, `location`) VALUES
+(1, 'adfasdf', '2014-12-31', '2014-12-31', '<p>adsfasdfasdf</p>', '2014-12-01 19:33:11', '2014-12-01 19:33:11', ''),
+(2, 'asdfasdf', '2014-12-31', '2014-12-31', '<p>adsfadsfasdf</p>', '2014-12-01 19:33:50', '2014-12-01 19:33:50', ''),
+(3, 'ddffd', '2014-12-31', '2014-12-31', '<p>fadfasdf</p>', '2014-12-01 19:41:10', '2014-12-01 19:41:10', 'dfadsf');
 
 -- --------------------------------------------------------
 
@@ -341,7 +368,11 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 ('2014_09_28_045647_add_event_id_to_events_users', 43),
 ('2014_09_28_060724_remove_establishment_id_from_events_users', 44),
 ('2014_09_28_061043_remove_establishment_id_from_events_users', 45),
-('2014_10_22_154638_create_badge_users', 46);
+('2014_10_22_154638_create_badge_users', 46),
+('2014_12_02_023056_create_events_table', 47),
+('2014_12_02_025309_create_events_manager_table', 48),
+('2014_12_02_033055_create_events_table', 49),
+('2014_12_02_033543_add_location_to_events_table', 50);
 
 -- --------------------------------------------------------
 
@@ -843,7 +874,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstname`, `lastname`, `status`, `role`, `remember_token`, `age`, `gender`, `bloodtype`, `contactnumber`, `profilepic`, `establishment_id`, `location`) VALUES
 (1, 'admin', '$2y$10$4bHqb2j1T8j3KJwJTtzEnuh9TBfBKOW0hhhV61Q2v6rMUFZTsD6AC', 'barriosjerson@gmail.com', 'Andy', 'Barrios', 1, 'admin', 'hcNwCiKVIptNvEXZxcMQQNBtBlwrhNAyJ3LE9sA53ad9riItyCZvFcFaQL2n', 0, '', '', '', '', '', ''),
-(2, 'codekidie', '$2y$10$M1Obs/lpoTWUoUdAuOUhve.V/vuFddWBw9mL59ZGvPwS4wDV97tyC', 'codekidie@gmail.com', 'Edyl Jay', 'Templado', 1, 'admin', 'JPc6IuU7bNwcKl5hFvvlZkED2haohuzIl0iGBcTXt9VOH4E4YubvUahAXc57', 0, '', '', '', '', '', 'Shrine Hills Matina Davao City'),
+(2, 'codekidie', '$2y$10$M1Obs/lpoTWUoUdAuOUhve.V/vuFddWBw9mL59ZGvPwS4wDV97tyC', 'codekidie@gmail.com', 'Edyl Jay', 'Templado', 1, 'admin', 'OYTMDhxCBTdP1OFqVOFR8Bsc3jx47QKjmc3hvz9QoUDvI4rwKnCnnr9Pz6CG', 0, '', '', '', '', '', 'Shrine Hills Matina Davao City'),
 (3, 'codeblast', '$2y$10$9be0jucYmEQFgVg0dUoNHOKL45qkPqhpYDNFx/B/FXphc7zgIvrma', 'codeblast@gmail.com', 'Code', 'Blast', 1, 'medtech', 'TGkxxqGlmUi376929BlciAY5bdSJUKmXHKuHQ3ctqznmDe7NXjYcHuxQVATb', 0, '', '', '', '', '54150856e4e6f', ''),
 (6, 'code', '$2y$10$YCxC23ml0rGqkUlVpJBv5.xqlrgl92XDSEVXAUPB/2K/6/lsKNfQ6', 'codekidie@gmail.com', 'coder', 'coder', 1, 'admin', NULL, 0, '', '', '', '', '', ''),
 (8, 'coder', '$2y$10$FG9QrDj3WlF8/FcgQtZj6uo1iAs61.b2Z7uZkDWYENHkwDqN1rw6G', 'code@gmail.com', 'code', 'code', 1, 'client', '74vFEcoMAXR5fHx0UXV9PXXXS9yMi6OwcbG6em7IH0GupTu9KrczWkT3s4lf', 20, 'MALE', 'A', '09206567002', '', '', ''),

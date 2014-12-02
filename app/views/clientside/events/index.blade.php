@@ -17,7 +17,8 @@
                 </header> 
                 <div class="page-content">
                     <div class="row page-row">
-                        <div class="events-wrapper col-md-8 col-sm-7">                         
+                        <div class="events-wrapper col-md-8 col-sm-7">
+                        @foreach($events as $e)                         
                             <article class="events-item page-row has-divider clearfix">
                                 <div class="date-label-wrapper col-md-1 col-sm-2">
                                     <p class="date-label">
@@ -26,11 +27,12 @@
                                     </p>
                                 </div><!--//date-label-wrapper-->
                                 <div class="details col-md-11 col-sm-10">
-                                    <h3 class="title">Open Day</h3>
-                                    <p class="meta"><span class="time"><i class="fa fa-clock-o"></i>10:00am - 18:00pm</span><span class="location"><i class="fa fa-map-marker"></i><a href="#">East Campus</a></span></p>  
-                                    <p class="desc">Donec commodo felis nec eros mollis dignissim. Pellentesque scelerisque nisl eu erat condimentum, at pellentesque odio elementum. Praesent accumsan non quam vel vulputate. Nullam ac hendrerit quam, ut tincidunt felis. Praesent condimentum ut enim ut mattis.</p>                       
+                                    <h3 class="title">{{$e->title}}</h3>
+                                    <p class="meta"><span class="time"><i class="fa fa-clock-o"></i>10:00am - 18:00pm</span><span class="location"><i class="fa fa-map-marker"></i><a href="#">{{$e->location}}</a></span></p>  
+                                    <p class="desc">{{$e->event_details}}</p>                       
                                 </div><!--//details-->
                             </article><!--//events-item-->
+                        @endforeach    
                             <article class="events-item page-row has-divider clearfix">
                                 <div class="date-label-wrapper col-md-1 col-sm-2">
                                     <p class="date-label">
