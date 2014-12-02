@@ -2,14 +2,14 @@
 @include('administrator.header')
 @section('page-content')
 	<!-- START ROW -->
-  {{Form::open(array('url'=>'administrator/events/save'))}}
+  {{Form::open(array('url'=>'events/save'))}}
   <!-- {{Form::open(array('url'=>'sandbox/submit'))}} -->
 	<div class="row">
     <div class="col-lg-12">
             <h1>Create Events</h1>
             <ol class="breadcrumb">
               <li><a href="{{url('administrator')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-              <li class=""><i class="fa fa-home"></i><a href="{{url('administrator/events')}}"> Events </a></li>
+              <li class=""><i class="fa fa-home"></i><a href="{{url('events/create')}}"> Events </a></li>
               <li class="active"><i class="fa fa-plus"></i> Create New Events</li>
             </ol>
           </div>
@@ -21,9 +21,43 @@
 			{{Session::get('message')}}
       <div class="form-group">
         
+        <label for="">Event Title</label>
         {{$errors->first('title')}}
+
         {{Form::text('title','',array('class'=>'form-control',
                                       'placeholder'=>'Enter Title Here'))}}
+      </div>
+
+      <div class="form-group">
+        
+        <label for="">Event Location</label>
+        {{$errors->first('location')}}
+
+        {{Form::text('location','',array('class'=>'form-control',
+                                      'placeholder'=>'Enter Location Here'))}}
+      </div>
+
+      <div class="form-group">
+        
+    
+        <label for="">Event Start</label>
+        {{$errors->first('event_start')}}
+
+        {{Form::input('date','event_start','',array('class'=>'form-control'))}}
+        
+
+        <label for="">Event End</label>
+        {{$errors->first('event_end')}}
+
+        {{Form::input('date','event_end','',array('class'=>'form-control'))}}
+    
+      </div>
+      <div class="form-group">
+        <label for="">Event Details</label>
+        <label for="">{{$errors->first('event_details')}}</label>
+
+        {{Form::textarea('event_details','',array('class'=>'form-control','id'=>'details'))}}
+ 
       </div>
    
       <hr>
@@ -35,45 +69,12 @@
       <div class="panel panel-default">
               <div class="panel-heading"><strong>Publish</strong></div>
               <div class="panel-body">
-                {{Form::submit('Save Draft',array("class"=>"btn btn-success","name"=>"draft"))}}
-                {{Form::submit('Publish Page',array("class"=>"btn btn-primary","name"=>"publish"))}}
+                {{Form::reset('Reset Inputs',array("class"=>"btn btn-warning btn-sm"))}}
+                {{Form::submit('Publish Event',array("class"=>"btn btn-primary btn-sm","name"=>"publish"))}}
               </div>
             </div>
 
-            <!-- START TEMPLATE OPTIONS -->
-            <div class="panel panel-default">
-              <div class="panel-heading"><strong>Page Template</strong></div>
-              <div class="panel-body">
-                <label for="">Custom Template</label>
-              <select name="template" id="template" class="form-control">
-                <option value="default">Default</option>
-                <option value="full_width">Full Width</option>
-                <option value="right_sidebar">Right Sidebar</option>
-                <option value="left_sidebar">Left Sidebar</option>
-              </select>
-              <hr>
-              <label>Insert Form</label>
-              <div class="form-group">
-                <input type="radio" name="form_active" value="1"> Yes
-                <input type="radio" name="form_active" value="0" checked> No
-              </div>
-              </div>
-            </div>
-            <!-- END TEMPLATE OPTIONS -->
-
-            <!-- START SIDEBAR OPTIONS -->
-            <div class="panel panel-default" id="sidebar-widget">
-              <div class="panel-heading"><strong>Sidebar Widgets</strong></div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="">Text Widget</label>
-                  <p class="help-block">You can put codes for ads here or any html codes</p>  
-                  {{Form::textarea('text_widget','',array('class'=>'form-control'))}}   
-                </div>
-                           
-              </div>
-            </div>
-            <!-- END SIDEBAR OPTIONS -->
+          
 
              
     </div>

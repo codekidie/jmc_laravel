@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="loginfrm">
-		<p class="frmTitle"><strong>Bloodhuntphil Admin Panel</strong></p>
+		<center><p class="frmTitle"><strong>JMC Admin Panel</strong></p></center>
 		<div class="divider"></div>
 		<div id="content"></div>
 		{{Form::open(array("url"=>"login/authenticate","id"=>"frm"))}}

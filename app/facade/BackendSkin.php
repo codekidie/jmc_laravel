@@ -14,6 +14,7 @@ class BackendSkin{
 	  $link .=  '<link href="'.asset('_plugin/lightbox/css/lightbox.css').'" rel="stylesheet" />';
 	  $link .=  '<link rel="stylesheet" type="text/css" href="'.asset(self::$dir.'js/uploadify/uploadify.css').'">';
     $link .=  '<link rel="stylesheet" href="'.asset('_assets/backend/js/morris/morris-0.4.3.min.css').'">';
+
        
       return $link;
     }
@@ -24,6 +25,9 @@ class BackendSkin{
       $js .='<script src="'.asset('_assets/backend/js/user.js').'"></script>';
       $js .='<script src="'.asset('_assets/backend/js/message_label.js').'"></script>';
       $js .='<script src="'.asset('_assets/backend/js/post.js').'"></script>';
+
+
+
        return $js;
     }
  

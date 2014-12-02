@@ -143,7 +143,13 @@ Route::get('courses','CoursesController@index');
 Route::get('news','NewsController@index');
 
 //Client Side Events
-Route::get('events','EventsController@index');
+Route::get('events','EventManagerController@index');
+
+//Admin Side Events 
+Route::get('events/create','EventManagerController@create');
+Route::post('events/save','EventManagerController@store');
+
+
 
 //Client Side Contact
 Route::get('contact','ContactController@index');

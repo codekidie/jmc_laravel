@@ -22,7 +22,8 @@ class EventsController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('administrator.events.create')->with('page_title','Create New Event');
+		
 	}
 
 	/**
@@ -33,7 +34,29 @@ class EventsController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$data = Input::all();
+		$rules = array('title'=>'required|unique:events',
+					   'event_start'=>'required',
+					   'event_end'=>'required',
+					   'event_details'=>'required');
+
+		$message = array("required"=>Helpers::errorLabel(" is required!"),
+			             "unique"=>Helpers::errorLabel(" has been taken!"));
+		$v = Validator::make($data,$rules,$message);
+		if($v->fails()){
+			return Redirect::to('events/create')->withErrors($v)->withInput();
+		}
+		else{
+				$e = new Event_Manager;
+				$e->title = $data['title'];
+				$e->event_start = $data['event_start'];
+				$e->event_end = $data['event_end'];
+				$e->event_details = $data['event_details'];
+				$e->save();	
+
+				Session::flash('message',Helpers::message("Event Successfully Added!"));
+				return Redirect::to('events/create');
+			}
 	}
 
 	/**

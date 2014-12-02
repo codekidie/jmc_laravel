@@ -2,6 +2,8 @@
     </div><!-- /#wrapper -->
 
     <!-- JavaScript -->
+
+   
     
     @if(Request::segment(3) == "create" || Request::segment(3) == "edit")
     <script src="{{asset('_assets/backend/js/page.js')}}"></script>

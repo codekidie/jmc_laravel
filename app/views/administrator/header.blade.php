@@ -55,6 +55,7 @@
             <li><a href="{{url('administrator/slider')}}"><i class="fa fa-film"></i> Slider</a></li>
             <li><a href="{{url('administrator/menu')}}"><i class="fa fa-bars"></i> Menu</a></li>
             <li><a href="{{url('administrator/widgets')}}"><i class="fa fa-puzzle-piece"></i> Widgets</a></li>
+             <li><a href="{{url('events/create')}}"><i class="fa fa-list"></i> Events</a></li>
             
             <li><a href="{{url('administrator/settings')}}"><i class="fa fa-gear"></i> Settings</a></li>  
           </ul>
