@@ -141,6 +141,14 @@ Route::get('courses','CoursesController@index');
 
 //Client Side News
 Route::get('news','NewsController@index');
+Route::get('news/view/{id}','NewsController@singleNews');
+
+
+
+//Admin Side News
+Route::get('news/create','NewsController@create');
+Route::post('news/save','NewsController@store');
+
 
 //Client Side Events
 Route::get('events','EventManagerController@index');

@@ -10,7 +10,9 @@ class NewsController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('clientside.news.index')->with('page_title','News');
+		$data['page_title'] = "News";
+		$data['news'] = News::paginate(15);
+		return View::make('clientside.news.index',$data);
 		
 	}
 
@@ -22,7 +24,10 @@ class NewsController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		$data['page_title'] = "News";
+		$data['news'] = News::paginate(15);
+
+		return View::make('administrator.news.index',$data);
 	}
 
 	/**
@@ -33,7 +38,31 @@ class NewsController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$data = Input::all();
+		$rules = array('title'=>'required|unique:news',
+					   'news_image'=>'required',
+					   'news_content'=>'required',
+					   'published_by'=>'required'
+					   );
+
+		$message = array("required"=>Helpers::errorLabel(" is required!"),
+			             "unique"=>Helpers::errorLabel(" has been taken!"));
+		$v = Validator::make($data,$rules,$message);
+		if($v->fails()){
+			return Redirect::to('events/create')->withErrors($v)->withInput();
+		}
+		else{
+				$n = new News;
+				$n->title = $data['title'];
+				$n->image_path = $data['news_image'];
+				$n->content = $data['news_content'];
+				$n->publishedby = $data['published_by'];
+
+				$n->save();	
+
+				Session::flash('message',Helpers::message("News Successfully Created!"));
+				return Redirect::to('news/create');
+			}
 	}
 
 	/**
@@ -84,4 +113,12 @@ class NewsController extends \BaseController {
 		//
 	}
 
+	public function singleNews($id)
+	{
+		$data['news'] = News::find($id);
+		$data['page_title'] =  $data['news']->title;
+
+
+		return View::make('clientside.news.singlenews',$data);
+	}
 }

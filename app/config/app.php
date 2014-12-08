@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost/bloodhuntphil/',
+	'url' => 'http://localhost/jmc/',
 
 	/*
 	|--------------------------------------------------------------------------

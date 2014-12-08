@@ -643,7 +643,7 @@ ul.custom-list-style li {
 }
 /* ======= Header ======= */
 .header .top-bar {
-  background: #2f506c;
+  background: #47143c;
 }
 .header .top-bar .search-form {
   padding: 10px 0;
@@ -1439,7 +1439,6 @@ ul.custom-list-style li {
   padding-top: 5px;
 }
 .home-page section {
-  background: #f5f5f5;
   overflow: hidden;
   margin-bottom: 30px;
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2014 at 04:50 AM
+-- Generation Time: Dec 08, 2014 at 04:28 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `location` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `events`
@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS `events` (
 INSERT INTO `events` (`id`, `title`, `event_start`, `event_end`, `event_details`, `created_at`, `updated_at`, `location`) VALUES
 (1, 'adfasdf', '2014-12-31', '2014-12-31', '<p>adsfasdfasdf</p>', '2014-12-01 19:33:11', '2014-12-01 19:33:11', ''),
 (2, 'asdfasdf', '2014-12-31', '2014-12-31', '<p>adsfadsfasdf</p>', '2014-12-01 19:33:50', '2014-12-01 19:33:50', ''),
-(3, 'ddffd', '2014-12-31', '2014-12-31', '<p>fadfasdf</p>', '2014-12-01 19:41:10', '2014-12-01 19:41:10', 'dfadsf');
+(3, 'ddffd', '2014-12-31', '2014-12-31', '<p>fadfasdf</p>', '2014-12-01 19:41:10', '2014-12-01 19:41:10', 'dfadsf'),
+(4, 'Another Test', '2014-12-31', '2014-12-31', '<p>Another Test</p>', '2014-12-05 00:51:11', '2014-12-05 00:51:11', 'Another Test');
 
 -- --------------------------------------------------------
 
@@ -106,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `images` (
   `filesize` bigint(20) NOT NULL,
   `url` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=167 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=170 ;
 
 --
 -- Dumping data for table `images`
@@ -152,7 +153,10 @@ INSERT INTO `images` (`id`, `filename`, `filesize`, `url`) VALUES
 (163, '_uploads/jaguar.jpg', 765288, ''),
 (164, '_uploads/jaguar_winning.jpg', 944126, ''),
 (165, '_uploads/900x542_4346_How_Nostalgic_2d_fantasy_totoro_anime_astroboy_rain_mystery_little_boy_picture_image_digital_art.jpg', 148207, ''),
-(166, '_uploads/benefits_pix.jpg', 13880, '');
+(166, '_uploads/benefits_pix.jpg', 13880, ''),
+(167, '_uploads/2.jpg', 18020, ''),
+(168, '_uploads/1604371.jpg', 1021155, ''),
+(169, '_uploads/hp.jpg', 43389, '');
 
 -- --------------------------------------------------------
 
@@ -372,7 +376,35 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 ('2014_12_02_023056_create_events_table', 47),
 ('2014_12_02_025309_create_events_manager_table', 48),
 ('2014_12_02_033055_create_events_table', 49),
-('2014_12_02_033543_add_location_to_events_table', 50);
+('2014_12_02_033543_add_location_to_events_table', 50),
+('2014_12_05_091726_create_news_table', 51),
+('2014_12_08_010634_add_image_path_to_news_table', 52),
+('2014_12_08_032407_create_video_table', 53);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
+
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `publishedby` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `image_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`id`, `title`, `content`, `publishedby`, `created_at`, `updated_at`, `image_path`) VALUES
+(1, 'Test', '<p>This is a test Maecenas nisl urna, condimentum ac justo a, adipiscing hendrerit magna. Fusce pharetra laoreet accumsan. Phasellus elit sapien, consequat vel sapien sit amet, condimentum vulputate odio. Aliquam fringilla justo quis est placerat, eu impe', 'Codekiddie', '2014-12-07 17:30:54', '2014-12-07 17:30:54', 'awards.jpg'),
+(2, 'Another Test', '<p>Donec id justo. Praesent ac sem eget est egestas volutpat.Etiam feugiat lorem non metus. Maecenas malesuada.Vivamus in erat ut urna cursus vestibulum. Nunc nec neque.Pellentesque dapibus hendrerit tortor. Proin pretium, leo ac pellentesque mollis, feli', 'Kevin Skouglund', '2014-12-07 18:53:29', '2014-12-07 18:53:29', 'buwan_ng_wika_2.jpg');
 
 -- --------------------------------------------------------
 
@@ -492,7 +524,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 INSERT INTO `settings` (`id`, `title`, `logo`, `url`, `subscribe_text`, `facebook_url`, `twitter_url`, `linkedin_url`, `gplus_url`, `pinterest_url`, `upload_directory`) VALUES
-(1, 'Bloodhuntphil', 'http://localhost/bloodhuntphil/_assets/frontend/img/logo.png', 'http://localhost/bloodhuntphil/', 'We Sent You Only Relevant Informations Regarding Blood  Transactions Nothing Less Nothing More.', 'http://facebook.com/bloodhuntphil', 'http://twitter.com/bloodhuntphil', 'http://linkedin.com/bloodhuntphil', 'http://google.com/bloodhuntphil', 'http://pinterest.com/bloodhuntphil', '_uploads');
+(1, 'JMC', 'http://localhost/bloodhuntphil/_assets/frontend/img/logo.png', 'http://localhost/jmc/', 'Subscribe to be updated with our latest news', 'http://facebook.com/jmc', 'http://twitter.com/jmc', 'http://linkedin.com/jmc', 'http://google.com/jmc', 'http://pinterest.com/jmc', '_uploads');
 
 -- --------------------------------------------------------
 
@@ -874,7 +906,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstname`, `lastname`, `status`, `role`, `remember_token`, `age`, `gender`, `bloodtype`, `contactnumber`, `profilepic`, `establishment_id`, `location`) VALUES
 (1, 'admin', '$2y$10$4bHqb2j1T8j3KJwJTtzEnuh9TBfBKOW0hhhV61Q2v6rMUFZTsD6AC', 'barriosjerson@gmail.com', 'Andy', 'Barrios', 1, 'admin', 'hcNwCiKVIptNvEXZxcMQQNBtBlwrhNAyJ3LE9sA53ad9riItyCZvFcFaQL2n', 0, '', '', '', '', '', ''),
-(2, 'codekidie', '$2y$10$M1Obs/lpoTWUoUdAuOUhve.V/vuFddWBw9mL59ZGvPwS4wDV97tyC', 'codekidie@gmail.com', 'Edyl Jay', 'Templado', 1, 'admin', 'OYTMDhxCBTdP1OFqVOFR8Bsc3jx47QKjmc3hvz9QoUDvI4rwKnCnnr9Pz6CG', 0, '', '', '', '', '', 'Shrine Hills Matina Davao City'),
+(2, 'codekidie', '$2y$10$3AXaWdZuEH2NWcMGa64z9OXZ2HgYlNYs6PEJMqO2Le2tE4Xc2BJhq', 'codekidie@gmail.com', 'Edyl Jay', 'Templado', 1, 'admin', 'JUqpigTQdREA2nsgnXjfeNYOymbN26O6yfDOJNSwn7mZH8Jezqy9UR8LMbrH', 0, '', '', '', '', '', 'Shrine Hills Matina Davao City'),
 (3, 'codeblast', '$2y$10$9be0jucYmEQFgVg0dUoNHOKL45qkPqhpYDNFx/B/FXphc7zgIvrma', 'codeblast@gmail.com', 'Code', 'Blast', 1, 'medtech', 'TGkxxqGlmUi376929BlciAY5bdSJUKmXHKuHQ3ctqznmDe7NXjYcHuxQVATb', 0, '', '', '', '', '54150856e4e6f', ''),
 (6, 'code', '$2y$10$YCxC23ml0rGqkUlVpJBv5.xqlrgl92XDSEVXAUPB/2K/6/lsKNfQ6', 'codekidie@gmail.com', 'coder', 'coder', 1, 'admin', NULL, 0, '', '', '', '', '', ''),
 (8, 'coder', '$2y$10$FG9QrDj3WlF8/FcgQtZj6uo1iAs61.b2Z7uZkDWYENHkwDqN1rw6G', 'code@gmail.com', 'code', 'code', 1, 'client', '74vFEcoMAXR5fHx0UXV9PXXXS9yMi6OwcbG6em7IH0GupTu9KrczWkT3s4lf', 20, 'MALE', 'A', '09206567002', '', '', ''),
@@ -896,6 +928,22 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstname`, `lastna
 (26, 'Aldy', '$2y$10$EGGpC10TJXcQ19AKZvnT4eJ3QeQIC.QHp0v.b.uz2Z07lzrwYIb1O', 'Aldy@gmail.com', 'Aldy Girl ', 'Amora', 1, 'client', NULL, 25, 'FEMALE', 'B', '09206567008', 'nMGrmW_Aldy Girl A. Amora.jpg', '', 'Davao City'),
 (27, 'diane', '$2y$10$DCMgDaZO6bcC9y/C1WA0ceNMdR.sSXzjIXV2lK37YMUDPIfrcpVDu', 'dj.vallecera@gmail.com', 'Diane', 'Vallecera', 1, 'client', NULL, 20, 'FEMALE', 'B', '09206567008', 'emiRUd_dian.jpg', '', 'Davao City'),
 (28, 'Destiny Jane', '$2y$10$eABlrg/F.zmzrSz98skTYOaCs1N4EGy9Jz6B.TSOC42D.lktVh5He', 'desinyjanebraos@gmal.com', 'Destny Jane', 'Braos', 1, 'client', NULL, 21, 'FEMALE', 'O', '09261822046', 'ivb9SV_062520143020.jpg', '', 'Davao City');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `video`
+--
+
+CREATE TABLE IF NOT EXISTS `video` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `path` text COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
